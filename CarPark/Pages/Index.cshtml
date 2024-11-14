@@ -1,0 +1,56 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+
+    <a class="btn btn-success" asp-page="TripTickets/Create">Add</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Number</th>
+                <th scope="col">Car</th>
+                <th scope="col">Driver</th>
+                <th scope="col">Is Marked</th>
+                <th scope="col">Is Closed</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Data.Items)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Number</td>
+                    <td>@(item.Car?.Make + " " + item.Car?.Name)</td>
+                    <td>@item.Driver?.Name</td>
+                    <td>@item.IsMarked</td>
+                    <td>@item.IsClosed</td>
+                    <td>
+                        <a class="btn btn-success" asp-page="TripTickets/Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-warning" asp-page="TripTickets/Delete" asp-route-id="@item.Id">Delete</a>
+
+                        <form method="post" asp-page-handler="Mark" class="inlineForm">
+                            <input type="text" name="Id" value="@item.Id" hidden/>
+                            <button type="submit" class="btn btn-success">Mark</button>
+                        </form>
+
+                        <form method="post" asp-page-handler="Close" class="inlineForm">
+                            <input type="text" name="Id" value="@item.Id" hidden />
+                            <button type="submit" class="btn btn-success">Close</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @await Component.InvokeAsync("TopMostUsedCars")
+    @await Html.PartialAsync("_TopMostInDemandDrivers")
+    @await Html.PartialAsync("_Pagination", new { PageNumber = Model.Data.PageNumber, TotalPages = Model.Data.TotalPages })
+
+</div>

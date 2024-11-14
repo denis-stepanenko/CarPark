@@ -1,0 +1,7 @@
+﻿<h2>Top 5 Most Used Cars</h2>
+<ul class="list-group">
+    @foreach(var item in Model)
+    {
+        <li class="list-group-item">@(item.Make + " " + item.Name)</li>
+    }
+</ul>

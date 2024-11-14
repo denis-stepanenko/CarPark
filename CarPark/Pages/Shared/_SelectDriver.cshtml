@@ -1,0 +1,57 @@
+﻿<select id="@Model.Id" placeholder="Search" name="@Model.FieldName">
+    @if (Model.Item != null)
+    {
+        <option value="@Model.Item.Id">@Model.Item.Name</option>
+    }
+</select>
+
+<script>
+
+    $('#@Model.Id').selectize({
+        valueField: 'id',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="email">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+
+            var self = this;
+            $.ajax({
+                url: encodeURI('/api/GetDrivers?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>

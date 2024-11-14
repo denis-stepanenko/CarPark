@@ -1,0 +1,15 @@
+﻿@using CarPark.Models
+@using CarPark.Repos.Interfaces
+@inject ITripTicketRepo repo
+
+@{
+    List<Driver> drivers = await repo.GetTopMostInDemandDriversAsync();
+}
+
+<h2>Top 5 Most In-Demand Drivers</h2>
+<ul class="list-group">
+    @foreach (var item in drivers)
+    {
+        <li class="list-group-item">@item.Name</li>
+    }
+</ul>

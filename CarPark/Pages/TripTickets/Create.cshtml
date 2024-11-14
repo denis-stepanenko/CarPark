@@ -1,0 +1,30 @@
+﻿@page
+@using CarPark.Models
+@model CarPark.Pages.TripTickets.TripTicketModel
+@{
+}
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Item.Number">Number</label>
+        <input type="text" class="form-control @(Model.ModelState.IsValid ? "" : "is-invalid")" asp-for="Item.Number">
+        <div class="invalid-feedback" style="display:block;">
+            <span asp-validation-for="Item.Number"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Item.Car.Id">Car</label>
+        @await Html.PartialAsync("_SelectCar", new SelectViewModel<Car> { Id = "cars", FieldName = "carId" })
+        <span class="text-danger" asp-validation-for="Item.Car.Id"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Item.Driver.Id">Driver</label>
+        @await Html.PartialAsync("_SelectDriver", new SelectViewModel<Driver> { Id = "drivers", FieldName = "driverId" })
+        <span class="text-danger" asp-validation-for="Item.Driver.Id"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Add</button>
+    <a class="btn btn-default" asp-page="../Index">Cancel</a>
+</form>
