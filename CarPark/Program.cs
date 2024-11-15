@@ -1,7 +1,9 @@
 using CarPark.Models;
 using CarPark.Repos;
 using CarPark.Repos.Interfaces;
+using CarPark.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,9 @@ var client = new MongoClient(mongoDbSettings.ConnectionString);
 var database = client.GetDatabase(mongoDbSettings.DatabaseName);
 
 builder.Services.AddSingleton<IMongoDatabase>(database);
+
+var weatherForecastAPISettings = builder.Configuration.GetSection("WeatherForecastAPISettings").Get<WeatherForecastAPISettings>();
+builder.Services.AddSingleton<WeatherForecastService>(new WeatherForecastService(weatherForecastAPISettings.Key));
 
 builder.Services.AddScoped<ICarRepo, CarRepo>();
 builder.Services.AddScoped<IDriverRepo, DriverRepo>();

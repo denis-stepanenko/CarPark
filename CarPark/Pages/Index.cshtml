@@ -51,6 +51,7 @@
 
     @await Component.InvokeAsync("TopMostUsedCars")
     @await Html.PartialAsync("_TopMostInDemandDrivers")
+    @await Html.PartialAsync("_WeatherForecast")
     @await Html.PartialAsync("_Pagination", new { PageNumber = Model.Data.PageNumber, TotalPages = Model.Data.TotalPages })
 
 </div>

@@ -1,0 +1,9 @@
+﻿@using CarPark.Services
+@inject WeatherForecastService service
+
+@{
+    var forecast = await service.GetAsync();
+}
+
+<p>Temperature: @forecast.Temperature</p>
+<p>Feels Like: @forecast.FeelsLike</p>
